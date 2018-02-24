@@ -19,9 +19,19 @@
             font-family: 'Luckiest Guy', cursive;
             color:white;
             text-align: center;
-            display:block;
             font-size: 45px;
             font-size: 5vw;
+            text-shadow: 3px 3px 2px rgba(150, 150, 150, 1);
+        }
+        
+        .animated { visibility: visible !important; }
+        
+        .superchat-label{
+            font-family: "Arial Black", Gadget, sans-serif;
+            color:white;
+            text-align: center;
+            font-size: 45px;
+            font-size: 1.5vw;
             text-shadow: 3px 3px 2px rgba(150, 150, 150, 1);
         }
         
@@ -75,10 +85,21 @@ contosoChatHubProxy.on('Send', function(action, message) {
     console.log(action + ' ' + message);
     if(action == "superchat"){
         $('.superchat').text(message);
-        $('.superchat').animateCss('bounce');
+        $('.superchat').animateCss('fadeInUp', function() {
+            $('.superchat-label').animateCss('fadeIn');
+            $('.superchat-label').css('visibility', 'visible');
+        });
     }
     if(action == "clear"){
-       $('.superchat').text("");                      
+        
+        $('.superchat-label').animateCss('fadeOut', function(){
+            $('.superchat-label').css('visibility', 'hidden');   
+            $('.superchat').animateCss('fadeOut',function(){
+                 $('.superchat').text("");     
+            });
+        });
+        
+                       
     }
 });
 connection.start()
@@ -92,8 +113,8 @@ connection.start()
 <body>
     this is some text
     <div id="superchat-wrapper">
-        <span class="superchat">test</span>
-        <div class="superchat-label">superchat</div>
+        <div class="superchat">test</div>
+        <div class="superchat-label" style="visibility:hidden">superchat</div>
     </div>  
 </body>
 </html>
