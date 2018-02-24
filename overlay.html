@@ -5,16 +5,81 @@
   <meta charset="utf-8">
 
   <title>Chat Overlay</title>
+    <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
+    <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <script src="Scripts/jquery-1.6.4.min.js" type="text/javascript"></script>
     <script src="Scripts/jquery.signalR-2.2.2.min.js" type="text/javascript"></script>
     <script src="http://localhost:8080/signalr/hubs"></script>
     
+    <style type="text/css">
+        body {width:1920px;height:1080px}
+  
+        .superchat{
+            font-family: 'Luckiest Guy', cursive;
+            color:white;
+            text-align: center;
+            display:block;
+            font-size: 45px;
+            font-size: 5vw;
+            text-shadow: 3px 3px 2px rgba(150, 150, 150, 1);
+        }
+        
+        
+        
+        
+        body{background-color: #00ff00;}
+        #superchat-wrapper{
+            width:80%;
+            /*background-color:blue;  */
+            position: relative;
+            bottom: -80%;
+            margin:auto;
+        }
+    </style>
     
     <script>
+        
+$.fn.extend({
+  animateCss: function(animationName, callback) {
+    var animationEnd = (function(el) {
+      var animations = {
+        animation: 'animationend',
+        OAnimation: 'oAnimationEnd',
+        MozAnimation: 'mozAnimationEnd',
+        WebkitAnimation: 'webkitAnimationEnd',
+      };
+
+      for (var t in animations) {
+        if (el.style[t] !== undefined) {
+          return animations[t];
+        }
+      }
+    })(document.createElement('div'));
+
+    this.addClass('animated ' + animationName).one(animationEnd, function() {
+      $(this).removeClass('animated ' + animationName);
+
+      if (typeof callback === 'function') callback();
+    });
+
+    return this;
+  },
+});        
+        
+        
+        
 var connection = $.hubConnection('http://localhost:8080/signalr/', {useDefaultPath: false});
 var contosoChatHubProxy = connection.createHubProxy('MyHub');
-contosoChatHubProxy.on('Send', function(userName, message) {
-    console.log(userName + ' ' + message);
+contosoChatHubProxy.on('Send', function(action, message) {
+    console.log(action + ' ' + message);
+    if(action == "superchat"){
+        $('.superchat').text(message);
+        $('.superchat').animateCss('bounce');
+    }
+    if(action == "clear"){
+       $('.superchat').text("");                      
+    }
 });
 connection.start()
     .done(function(){ console.log('Now connected, connection ID=' + connection.id); })
@@ -25,6 +90,10 @@ connection.start()
 </head>
 
 <body>
- <h1>test</h1>
+    this is some text
+    <div id="superchat-wrapper">
+        <span class="superchat">test</span>
+        <div class="superchat-label">superchat</div>
+    </div>  
 </body>
 </html>
