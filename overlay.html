@@ -7,7 +7,7 @@
   <title>Chat Overlay</title>
     <link href="https://fonts.googleapis.com/css?family=Luckiest+Guy" rel="stylesheet">
     <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  href="animate.css">
     <script src="Scripts/jquery-1.6.4.min.js" type="text/javascript"></script>
     <script src="Scripts/jquery.signalR-2.2.2.min.js" type="text/javascript"></script>
     <script src="http://localhost:8080/signalr/hubs"></script>
@@ -33,6 +33,11 @@
             font-size: 45px;
             font-size: 1.5vw;
             text-shadow: 3px 3px 2px rgba(150, 150, 150, 1);
+        }
+        
+        video{
+            z-index: 500;
+            position: fixed;
         }
         
         
@@ -85,6 +90,9 @@ contosoChatHubProxy.on('Send', function(action, message) {
     console.log(action + ' ' + message);
     if(action == "superchat"){
         $('.superchat').text(message);
+        var audio = new Audio('sounds/coin-sound.mp3');
+        audio.volume = 0.4;
+        audio.play();
         $('.superchat').animateCss('fadeInUp', function() {
             $('.superchat-label').animateCss('fadeIn');
             $('.superchat-label').css('visibility', 'visible');
@@ -95,23 +103,56 @@ contosoChatHubProxy.on('Send', function(action, message) {
         $('.superchat-label').animateCss('fadeOut', function(){
             $('.superchat-label').css('visibility', 'hidden');   
             $('.superchat').animateCss('fadeOut',function(){
-                 $('.superchat').text("");     
+                 $('.superchat').text("");  
             });
-        });
-        
-                       
+        });                     
+    }
+    
+    if(message == "tide"){
+         playVideo("videos/tide-egg.mp4");
+    }
+    
+    if(message == "knuckles"){
+        playVideo("videos/knuckle-egg.mp4");
     }
 });
 connection.start()
     .done(function(){ console.log('Now connected, connection ID=' + connection.id); })
     .fail(function(){ console.log('Could not connect'); });
+        
+    /*$.connection.hub.disconnected(function() {
+        console.log("trying to reconnect");
+        setTimeout(function() {
+       $.connection.hub.start();
+       }, 5000); // Restart connection after 5 seconds.
+   });*/
+        
+function playVideo(videoSource){
+    
+    var video = document.getElementById('video');
+    var source = document.createElement('source');
+ 
+    source.setAttribute('src',videoSource);
+
+    video.appendChild(source);
+    video.play();
+    video.onended = function(e) {
+        video.pause();
+        source.setAttribute('src',"");
+        video.load();
+    }
+
+    
+}      
+        
+        
     
     </script>
     
 </head>
 
 <body>
-    this is some text
+    <video id="video" width="100%" height="100%"></video>
     <div id="superchat-wrapper">
         <div class="superchat">test</div>
         <div class="superchat-label" style="visibility:hidden">superchat</div>
