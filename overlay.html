@@ -43,7 +43,7 @@
         
         
         
-        body{background-color: #00ff00;}
+        body{background-color: #0000FF;}
         #superchat-wrapper{
             width:80%;
             /*background-color:blue;  */
@@ -85,6 +85,20 @@ $.fn.extend({
         
         
 var connection = $.hubConnection('http://localhost:8080/signalr/', {useDefaultPath: false});
+        
+connection.disconnected(function () {
+    console.log('We are currently experiencing difficulties with the connection.')
+    
+    
+ 
+   setTimeout(function() {
+       connection.start()
+    .done(function(){ console.log('Now connected, connection ID=' + connection.id); 
+   }, 5000); // Restart connection after 5 seconds.
+});
+    
+});        
+        
 var contosoChatHubProxy = connection.createHubProxy('MyHub');
 contosoChatHubProxy.on('Send', function(action, message) {
     console.log(action + ' ' + message);
@@ -124,11 +138,63 @@ contosoChatHubProxy.on('Send', function(action, message) {
         playVideo("videos/bee-egg.mp4");
     }
     
+    if(message == "race"){
+        playVideo("videos/race-egg.mp4");
+    }
+    
+    if(message == "couch"){
+        playVideo("videos/couch-egg.mp4");
+    }
+    
+    if(message == "peanut"){
+        playVideo("videos/banana-egg.mp4");
+    }
+
+    if(message == "phone"){
+        var audio = new Audio('sounds/banana-phone.mp3');
+        audio.volume = 1;
+        audio.play();
+    }
+    
+    if(message == "spaget"){
+        playVideo("videos/spaget-egg.mp4");
+    }
+    
+    if(message == "schwifty"){
+        playVideo("videos/schwifty-egg.mp4");
+    }
+    
+    
+
+    
+    
     
 });
 connection.start()
-    .done(function(){ console.log('Now connected, connection ID=' + connection.id); })
+    .done(function(){ console.log('Now connected, connection ID=' + connection.id); 
+                    
+  $.connection.hub.disconnected = function () {                
+        console.log("Server has disconnected");
+    };
+                    
+                    
+                    
+                    })
+                     
+            
+                     
+
+            
     .fail(function(){ console.log('Could not connect'); });
+      
+
+function checkConnection(){
+    
+    if ($.connection.hub && $.connection.hub.state === $.signalR.connectionState.disconnected) {
+  console.log("conneciton dead");
+}
+    
+}
         
     /*$.connection.hub.disconnected(function() {
         console.log("trying to reconnect");
@@ -154,7 +220,9 @@ function playVideo(videoSource){
 
     
 }      
+   
         
+
         
     
     </script>
@@ -164,7 +232,7 @@ function playVideo(videoSource){
 <body>
     <video id="video" width="100%" height="100%"></video>
     <div id="superchat-wrapper">
-        <div class="superchat">test</div>
+        <div class="superchat"></div>
         <div class="superchat-label" style="visibility:hidden">superchat</div>
     </div>  
 </body>
