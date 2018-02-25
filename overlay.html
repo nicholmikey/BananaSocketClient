@@ -36,7 +36,7 @@
         }
         
         video{
-            z-index: 500;
+            z-index: -1;
             position: fixed;
         }
         
@@ -115,6 +115,16 @@ contosoChatHubProxy.on('Send', function(action, message) {
     if(message == "knuckles"){
         playVideo("videos/knuckle-egg.mp4");
     }
+    
+    if(message == "rick"){
+        playVideo("videos/rick-egg.mp4");
+    }
+    
+    if(message == "bee"){
+        playVideo("videos/bee-egg.mp4");
+    }
+    
+    
 });
 connection.start()
     .done(function(){ console.log('Now connected, connection ID=' + connection.id); })
