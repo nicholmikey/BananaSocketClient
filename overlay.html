@@ -48,7 +48,7 @@
             width:80%;
             /*background-color:blue;  */
             position: relative;
-            bottom: -80%;
+            bottom: -20%;
             margin:auto;
         }
     </style>
@@ -164,8 +164,52 @@ contosoChatHubProxy.on('Send', function(action, message) {
         playVideo("videos/schwifty-egg.mp4");
     }
     
+    if(message == "hams"){
+        playVideo("videos/simpsons-egg-2.mp4");
+    }
     
-
+    if(message == "darth"){
+        playVideo("videos/darth-egg.mp4");
+    }
+    
+    if(message == "jeff"){
+        playVideo("videos/jeff-egg.mp4");
+    }
+    
+    if(message == "tidepod"){
+        playVideo("videos/tidepod-egg.mp4");
+    }
+    
+    if(message == "gucci"){
+        playVideo("videos/gucci-egg.mp4");
+    }
+    
+    if(message == "bitcon"){
+        playVideo("videos/bitcon-egg.mp4");
+    }
+    
+    if(message == "oof"){
+        playVideo("videos/oof-egg.mp4");
+    }
+    
+   if(message == "dolan"){
+        playVideo("videos/dolan-egg.mp4");
+    }
+    
+   if(message == "sparta"){
+        playVideo("videos/sparta-egg.mp4");
+    }
+    
+   if(message == "burger"){
+        playVideo("videos/burger-egg.mp4");
+    }
+    
+   if(message == "vsauce"){
+        playVideo("videos/vsauce-egg.mp4");
+    }
+    
+    
+    
     
     
     
@@ -214,6 +258,7 @@ function playVideo(videoSource){
     video.play();
     video.onended = function(e) {
         video.pause();
+        $('video source').remove();
         source.setAttribute('src',"");
         video.load();
     }
